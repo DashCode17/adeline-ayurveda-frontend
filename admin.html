@@ -138,8 +138,13 @@
       color: white;
     }
 
-    .btn-delete {
+    .btn-reject {
       background: #ef4444;
+      color: white;
+    }
+
+    .btn-delete {
+      background: #6b7280;
       color: white;
     }
 
@@ -387,6 +392,9 @@
               <button class="btn btn-approve" onclick="approveReview('${review.id}')">
                 ✓ Approuver
               </button>
+              <button class="btn btn-reject" onclick="rejectReview('${review.id}')">
+                ✗ Rejeter
+              </button>
             </div>
           ` : ''}
         </div>
@@ -423,6 +431,38 @@
         console.error('[Admin] Erreur approveReview:', error);
         showMessage('Erreur : ' + error.message, 'error');
         // NE PAS déconnecter automatiquement
+      }
+    }
+
+    // Rejeter un avis (suppression)
+    async function rejectReview(reviewId) {
+      if (!confirm('Rejeter et supprimer définitivement cet avis ?')) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/delete`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+          },
+          body: JSON.stringify({ reviewId })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || 'Erreur lors de la suppression');
+        }
+
+        showMessage('Avis supprimé avec succès !', 'success');
+
+        // Recharger les avis après un court délai pour que l'utilisateur voie le message
+        setTimeout(() => {
+          loadReviews();
+        }, 800);
+
+      } catch (error) {
+        console.error('[Admin] Erreur rejectReview:', error);
+        showMessage('Erreur : ' + error.message, 'error');
       }
     }
 
