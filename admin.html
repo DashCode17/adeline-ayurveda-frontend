@@ -258,6 +258,13 @@
     const reviewsList = document.getElementById('reviewsList');
     const logoutBtn = document.getElementById('logoutBtn');
 
+    // Vérifier si un token est déjà sauvegardé au chargement
+    const savedToken = localStorage.getItem('adminToken');
+    if (savedToken) {
+      // Tentative de connexion automatique avec le token sauvegardé
+      tryAutoLogin(savedToken);
+    }
+
     // Login
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -275,6 +282,10 @@
         }
 
         adminToken = token;
+
+        // Sauvegarder le token dans localStorage pour la prochaine fois
+        localStorage.setItem('adminToken', token);
+
         loginSection.classList.add('hidden');
         adminSection.classList.remove('hidden');
         loadReviews();
@@ -288,6 +299,10 @@
     logoutBtn.addEventListener('click', () => {
       adminToken = null;
       allReviews = [];
+
+      // Supprimer le token sauvegardé
+      localStorage.removeItem('adminToken');
+
       loginSection.classList.remove('hidden');
       adminSection.classList.add('hidden');
       loginError.classList.add('hidden');
@@ -408,6 +423,31 @@
         console.error('[Admin] Erreur approveReview:', error);
         showMessage('Erreur : ' + error.message, 'error');
         // NE PAS déconnecter automatiquement
+      }
+    }
+
+    // Tentative de connexion automatique avec un token sauvegardé
+    async function tryAutoLogin(token) {
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/reviews`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          // Token valide, connexion automatique
+          adminToken = token;
+          loginSection.classList.add('hidden');
+          adminSection.classList.remove('hidden');
+          loadReviews();
+        } else {
+          // Token invalide, supprimer du localStorage
+          localStorage.removeItem('adminToken');
+        }
+      } catch (error) {
+        // Erreur réseau, laisser l'utilisateur se connecter manuellement
+        localStorage.removeItem('adminToken');
       }
     }
 
