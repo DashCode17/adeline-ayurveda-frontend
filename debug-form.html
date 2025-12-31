@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Formulaire</title>
+  <style>
+    body { font-family: monospace; padding: 2rem; max-width: 800px; margin: 0 auto; }
+    .log { background: #f0f0f0; padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+    .error { background: #fee; color: #c00; }
+    .success { background: #efe; color: #060; }
+    button { padding: 0.5rem 1rem; margin: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>🔍 Debug Formulaire Avis</h1>
+
+  <div id="logs"></div>
+
+  <h2>Test 1 : API disponible ?</h2>
+  <button onclick="testHealthz()">Tester /healthz</button>
+
+  <h2>Test 2 : Soumettre un avis test</h2>
+  <button onclick="testSubmitReview()">Soumettre avis test</button>
+
+  <script>
+    const API_BASE = 'http://localhost:3000';
+    const logsDiv = document.getElementById('logs');
+
+    function log(message, type = 'log') {
+      const div = document.createElement('div');
+      div.className = `log ${type}`;
+      div.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong><br>${message}`;
+      logsDiv.insertBefore(div, logsDiv.firstChild);
+    }
+
+    async function testHealthz() {
+      log('Test /healthz...');
+      try {
+        const response = await fetch(`${API_BASE}/healthz`);
+        const data = await response.json();
+        log(`✅ Backend OK<br><pre>${JSON.stringify(data, null, 2)}</pre>`, 'success');
+      } catch (error) {
+        log(`❌ Erreur: ${error.message}`, 'error');
+      }
+    }
+
+    async function testSubmitReview() {
+      log('Test POST /api/reviews...');
+
+      const reviewData = {
+        name: 'Debug Test',
+        city: 'Paris',
+        rating: 5,
+        message: 'Ceci est un test de debug du formulaire',
+        email: 'debug@test.com',
+        website: '' // Honeypot vide
+      };
+
+      log(`Données envoyées :<br><pre>${JSON.stringify(reviewData, null, 2)}</pre>`);
+
+      try {
+        const response = await fetch(`${API_BASE}/api/reviews`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(reviewData)
+        });
+
+        log(`Status: ${response.status} ${response.statusText}`);
+
+        const contentType = response.headers.get('content-type');
+        log(`Content-Type: ${contentType}`);
+
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+
+          if (response.ok) {
+            log(`✅ SUCCÈS<br><pre>${JSON.stringify(data, null, 2)}</pre>`, 'success');
+          } else {
+            log(`❌ ERREUR Backend<br><pre>${JSON.stringify(data, null, 2)}</pre>`, 'error');
+          }
+        } else {
+          const text = await response.text();
+          log(`❌ Réponse non-JSON<br><pre>${text}</pre>`, 'error');
+        }
+
+      } catch (error) {
+        log(`❌ Erreur réseau: ${error.message}<br>Le backend est-il démarré ?`, 'error');
+      }
+    }
+
+    // Test auto au chargement
+    window.addEventListener('load', () => {
+      log('Page de debug chargée. Cliquez sur les boutons pour tester.');
+      testHealthz();
+    });
+  </script>
+</body>
+</html>

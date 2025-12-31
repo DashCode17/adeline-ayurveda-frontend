@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Découvrez les témoignages de mes clients sur leurs expériences de massages ayurvédiques. Avis authentiques et modérés.">
+  <title>Témoignages — Adeline Ayurveda</title>
+
+  <!-- Styles CSS -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/reviews-slider.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+</head>
+<body class="site-wrapper">
+
+  <!-- Overlay menu mobile -->
+  <div class="nav-overlay"></div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="site-logo">
+          <img src="assets/logo.svg" alt="Logo Adeline Ayurveda">
+          <span class="site-title">Adeline Ayurveda</span>
+        </a>
+
+        <!-- Bouton hamburger (mobile/tablette) -->
+        <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+          <div class="nav-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+
+        <nav class="main-nav" aria-label="Navigation principale">
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="ayurveda.html">Qu'est-ce que l'Ayurvéda</a></li>
+            <li><a href="prestations.html">Mes Prestations</a></li>
+            <li><a href="avis.html" class="active">Témoignages</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <section>
+      <div class="container">
+        <h1>💬 Témoignages</h1>
+
+        <div class="container-narrow">
+          <p class="text-center text-muted mb-lg">
+            Découvrez les avis de personnes ayant bénéficié de mes soins.<br>
+            Tous les témoignages sont publiés après modération.
+          </p>
+
+          <div class="text-center mb-lg">
+            <a href="laisser-un-avis.html" class="btn btn-primary">Laisser un avis</a>
+          </div>
+        </div>
+
+        <!-- Liste des témoignages (peuplée par JS) -->
+        <div class="cards-grid" id="reviewsList">
+          <!-- Fallback si JS désactivé -->
+          <div class="card">
+            <div class="card-body text-center">
+              <p class="text-muted">
+                Chargement des témoignages en cours...<br>
+                Veuillez activer JavaScript pour voir les avis.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message si aucun avis -->
+        <div id="noReviewsMessage" class="container-narrow text-center mt-lg" style="display: none;">
+          <div class="message message-info">
+            <p><strong>Aucun témoignage pour le moment.</strong></p>
+            <p>Soyez le premier à partager votre expérience !</p>
+            <a href="laisser-un-avis.html" class="btn btn-primary mt-sm">Laisser un avis</a>
+          </div>
+        </div>
+
+        <!-- Message d'erreur API -->
+        <div id="errorMessage" class="container-narrow mt-lg" style="display: none;">
+          <div class="message message-error">
+            <p><strong>Une erreur est survenue lors du chargement des témoignages.</strong></p>
+            <p>Veuillez réessayer ultérieurement.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Adeline Ayurveda</h3>
+          <p>
+            Praticienne en massage bien-être ayurvédique.<br>
+            Votre bien-être, ma priorité.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Navigation</h3>
+          <nav aria-label="Navigation footer">
+            <a href="index.html">Accueil</a><br>
+            <a href="ayurveda.html">Qu'est-ce que l'Ayurvéda</a><br>
+            <a href="prestations.html">Mes Prestations</a><br>
+            <a href="avis.html">Témoignages</a><br>
+            <a href="contact.html">Contact</a>
+          </nav>
+        </div>
+        <div class="footer-section">
+          <h3>Informations légales</h3>
+          <p>
+            Vos données sont protégées (RGPD).<br>
+            <a href="contact.html">Droit de retrait des témoignages</a><br>
+            Site hébergé par GitHub Pages
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Adeline Ayurveda — Tous droits réservés</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts JS -->
+  <script src="js/menu-hamburger.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script>
+    // Script inline pour charger la liste des avis (simple, pas de fichier séparé)
+    document.addEventListener('DOMContentLoaded', async () => {
+      const reviewsList = document.getElementById('reviewsList');
+      const noReviewsMessage = document.getElementById('noReviewsMessage');
+      const errorMessage = document.getElementById('errorMessage');
+
+      try {
+        // Fetch reviews (api.js fournit la fonction fetchReviews)
+        const reviews = await window.API.fetchReviews();
+
+        // Vider le fallback
+        reviewsList.innerHTML = '';
+
+        if (reviews.length === 0) {
+          // Aucun avis
+          noReviewsMessage.style.display = 'block';
+        } else {
+          // Afficher les avis
+          reviews.forEach(review => {
+            const card = createReviewCard(review);
+            reviewsList.appendChild(card);
+          });
+        }
+      } catch (error) {
+        // Erreur API
+        reviewsList.innerHTML = '';
+        errorMessage.style.display = 'block';
+        console.error('Erreur chargement avis:', error);
+      }
+    });
+
+    // Fonction pour créer une card d'avis
+    function createReviewCard(review) {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      // Étoiles
+      const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="review-rating" style="color: var(--color-accent-1); font-size: var(--font-size-md);">
+            ${stars}
+          </div>
+        </div>
+        <div class="card-body">
+          <p style="font-style: italic; line-height: 1.7;">${escapeHTML(review.message)}</p>
+        </div>
+        <div class="card-footer">
+          <span style="font-style: italic; color: var(--color-secondary-1);">${escapeHTML(review.name)} - ${escapeHTML(review.city)}</span>
+        </div>
+      `;
+
+      return card;
+    }
+
+    // Fonction d'échappement HTML (sécurité XSS)
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

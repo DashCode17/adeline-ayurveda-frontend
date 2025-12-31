@@ -1,0 +1,259 @@
+/* ========================================
+   SLIDER TÉMOIGNAGES — Scroll-snap natif
+   ======================================== */
+
+/* === CONTENEUR PRINCIPAL === */
+.reviews-slider {
+  position: relative;
+  margin: var(--spacing-xl) 0;
+}
+
+.reviews-slider-title {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xl);
+  color: var(--color-accent-3);
+}
+
+/* === CONTENEUR SCROLLABLE === */
+.slider-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+
+  /* Masque la scrollbar (optionnel, garde fonctionnalité) */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent-1) var(--color-secondary-2);
+
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) 0 var(--spacing-lg) 0;
+
+  /* Évite la sélection de texte pendant le scroll */
+  user-select: none;
+  -webkit-overflow-scrolling: touch; /* Scroll fluide iOS */
+
+  /* IMPORTANT : Évite le débordement horizontal de la page */
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Masque scrollbar Webkit (Chrome, Safari) */
+.slider-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.slider-container::-webkit-scrollbar-track {
+  background: var(--color-secondary-2);
+  border-radius: var(--border-radius-full);
+}
+
+.slider-container::-webkit-scrollbar-thumb {
+  background: var(--color-accent-1);
+  border-radius: var(--border-radius-full);
+}
+
+.slider-container::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-3);
+}
+
+/* === CARD TÉMOIGNAGE === */
+.review-card {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+
+  /* Largeur adaptative - utilise calc() pour tenir compte du padding du container */
+  min-width: 280px;
+  max-width: 350px;
+  width: calc(100% - 2rem); /* Prend toute la largeur moins les paddings */
+
+  background-color: #FFFFFF;
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* === NOTATION ÉTOILES === */
+.review-rating {
+  display: flex;
+  gap: 0.25rem;
+  font-size: var(--font-size-md);
+  color: var(--color-accent-1);
+}
+
+.review-rating .star {
+  display: inline-block;
+}
+
+.review-rating .star-filled::before {
+  content: '★';
+}
+
+.review-rating .star-empty::before {
+  content: '☆';
+}
+
+/* === TEXTE TÉMOIGNAGE === */
+.review-message {
+  font-size: var(--font-size-sm);
+  line-height: 1.7;
+  color: var(--color-text-dark);
+  font-style: italic;
+  flex: 1; /* Pousse le footer en bas */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5; /* Limite à 5 lignes */
+  -webkit-box-orient: vertical;
+}
+
+/* === AUTEUR === */
+.review-author {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--font-size-xs);
+  color: var(--color-secondary-1);
+}
+
+.review-author-name {
+  font-weight: normal;
+  font-style: italic;
+  color: var(--color-secondary-1);
+}
+
+.review-author-city {
+  font-style: italic;
+}
+
+/* === FALLBACK (si API échoue) === */
+.review-card-fallback {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  min-width: 280px;
+  width: 90vw;
+
+  background-color: var(--color-secondary-2);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--spacing-sm);
+}
+
+.review-card-fallback p {
+  font-size: var(--font-size-sm);
+  color: var(--color-secondary-1);
+  margin: 0;
+}
+
+.review-card-fallback strong {
+  color: var(--color-text-dark);
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+/* === INDICATEURS DOTS === */
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-md);
+}
+
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--border-radius-full);
+  background-color: var(--color-border);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+}
+
+.slider-dot:hover,
+.slider-dot.active {
+  background-color: var(--color-accent-3);
+  transform: scale(1.2);
+}
+
+/* === BOUTONS NAVIGATION (optionnels, desktop) === */
+.slider-nav {
+  display: none; /* Masqué par défaut (scroll tactile suffit) */
+}
+
+@media (min-width: 768px) {
+  .slider-nav {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+  }
+
+  .slider-nav-btn {
+    background-color: var(--color-accent-1);
+    color: var(--color-text-dark);
+    border: none;
+    border-radius: var(--border-radius-full);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: var(--font-size-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+  }
+
+  .slider-nav-btn:hover:not(:disabled) {
+    background-color: var(--color-accent-3);
+    color: var(--color-text-light);
+    box-shadow: var(--shadow-md);
+    transform: scale(1.1);
+  }
+
+  .slider-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  /* Sur desktop, affiche plusieurs cards */
+  .review-card {
+    width: calc(33.333% - var(--spacing-md)); /* 3 cards visibles */
+    min-width: 300px;
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 640px) {
+  .review-card {
+    min-width: 260px;
+    padding: var(--spacing-md);
+  }
+
+  .reviews-slider-title {
+    font-size: var(--font-size-lg);
+  }
+}

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Partagez votre expérience après un massage ayurvédique. Formulaire sécurisé et conforme RGPD.">
+  <title>Laisser un avis — Adeline Ayurveda</title>
+
+  <!-- Styles CSS -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+  <style>
+    /* Styles spécifiques pour la notation étoiles */
+    .rating-stars {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 2.5rem;
+    }
+
+    .rating-stars input[type="radio"] {
+      display: none;
+    }
+
+    .rating-stars label {
+      cursor: pointer;
+      color: var(--color-border);
+      transition: color var(--transition-fast);
+    }
+
+    .rating-stars label:hover,
+    .rating-stars label:hover ~ label,
+    .rating-stars input[type="radio"]:checked ~ label {
+      color: var(--color-accent-1);
+    }
+
+    .rating-stars label::before {
+      content: '★';
+    }
+  </style>
+</head>
+<body class="site-wrapper">
+
+  <!-- Overlay menu mobile -->
+  <div class="nav-overlay"></div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="site-logo">
+          <img src="assets/logo.svg" alt="Logo Adeline Ayurveda">
+          <span class="site-title">Adeline Ayurveda</span>
+        </a>
+
+        <!-- Bouton hamburger (mobile/tablette) -->
+        <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+          <div class="nav-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+
+        <nav class="main-nav" aria-label="Navigation principale">
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="ayurveda.html">Qu'est-ce que l'Ayurvéda</a></li>
+            <li><a href="prestations.html">Mes Prestations</a></li>
+            <li><a href="avis.html">Témoignages</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <section>
+      <div class="container">
+        <h1>✍️ Laisser un avis</h1>
+
+        <div class="container-narrow">
+          <p class="text-center text-muted mb-lg">
+            Votre avis sera publié après modération.<br>
+            Merci de partager votre expérience en toute sincérité.
+          </p>
+
+          <!-- Messages de retour (succès/erreur) -->
+          <div id="successMessage" class="message message-success" style="display: none;">
+            <p><strong>Merci pour votre témoignage !</strong></p>
+            <p>Votre avis sera publié après validation.</p>
+          </div>
+
+          <div id="errorMessageForm" class="message message-error" style="display: none;">
+            <p><strong>Une erreur est survenue.</strong></p>
+            <p id="errorText">Veuillez réessayer ultérieurement.</p>
+          </div>
+
+          <!-- FORMULAIRE -->
+          <form id="reviewForm" class="mt-lg" novalidate>
+            <!-- Honeypot (champ caché anti-spam) -->
+            <div class="honeypot">
+              <label for="website">Ne pas remplir ce champ</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <!-- Prénom -->
+            <div class="form-group">
+              <label for="firstname" class="form-label required">Prénom</label>
+              <input
+                type="text"
+                id="firstname"
+                name="firstname"
+                class="form-input"
+                required
+                maxlength="50"
+                placeholder="Votre prénom"
+              >
+              <span class="form-error" id="firstnameError"></span>
+            </div>
+
+            <!-- Ville -->
+            <div class="form-group">
+              <label for="city" class="form-label required">Ville</label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                class="form-input"
+                required
+                maxlength="50"
+                placeholder="Votre ville"
+              >
+              <span class="form-error" id="cityError"></span>
+            </div>
+
+            <!-- Témoignage -->
+            <div class="form-group">
+              <label for="message" class="form-label required">Votre témoignage</label>
+              <textarea
+                id="message"
+                name="message"
+                class="form-textarea"
+                required
+                minlength="10"
+                maxlength="500"
+                placeholder="Partagez votre expérience... (minimum 10 caractères)"
+              ></textarea>
+              <span class="form-hint" id="messageCount">0 / 500 caractères</span>
+              <span class="form-error" id="messageError"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label for="email" class="form-label required">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                required
+                placeholder="votre@email.com"
+              >
+              <span class="form-hint">Votre email ne sera jamais publié (RGPD).</span>
+              <span class="form-error" id="emailError"></span>
+            </div>
+
+            <!-- Notation étoiles -->
+            <div class="form-group">
+              <label class="form-label required">Votre note</label>
+              <fieldset class="rating-stars" aria-label="Notation de 1 à 5 étoiles">
+                <input type="radio" id="star5" name="rating" value="5" required>
+                <label for="star5" title="5 étoiles"></label>
+
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4" title="4 étoiles"></label>
+
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3" title="3 étoiles"></label>
+
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2" title="2 étoiles"></label>
+
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1" title="1 étoile"></label>
+              </fieldset>
+              <span class="form-error" id="ratingError"></span>
+            </div>
+
+            <!-- Consentement email -->
+            <div class="form-checkbox">
+              <input type="checkbox" id="consentEmail" name="consentEmail" required>
+              <label for="consentEmail">
+                J'accepte que mon email soit utilisé uniquement pour la gestion de ce témoignage
+                (il ne sera jamais publié ni partagé).<span style="color: var(--color-error);"> *</span>
+              </label>
+            </div>
+
+            <!-- Autorisation publication -->
+            <div class="form-checkbox">
+              <input type="checkbox" id="consentPublication" name="consentPublication" required>
+              <label for="consentPublication">
+                J'autorise la publication de mon témoignage (prénom et ville) sur ce site.<span style="color: var(--color-error);"> *</span>
+              </label>
+            </div>
+
+            <!-- Prestation reçue -->
+            <div class="form-checkbox">
+              <input type="checkbox" id="confirmedService" name="confirmedService" required>
+              <label for="confirmedService">
+                Je confirme avoir reçu une prestation de massage chez Adeline.<span style="color: var(--color-error);"> *</span>
+              </label>
+            </div>
+
+            <!-- Bouton submit -->
+            <div class="form-group text-center mt-lg">
+              <button type="submit" class="btn btn-primary" id="submitBtn">
+                Envoyer mon témoignage
+              </button>
+              <p class="text-muted mt-sm" style="font-size: var(--font-size-xs);">
+                En soumettant ce formulaire, vous acceptez que vos données soient traitées conformément au RGPD.
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Adeline Ayurveda</h3>
+          <p>
+            Praticienne en massage bien-être ayurvédique.<br>
+            Votre bien-être, ma priorité.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Navigation</h3>
+          <nav aria-label="Navigation footer">
+            <a href="index.html">Accueil</a><br>
+            <a href="ayurveda.html">Qu'est-ce que l'Ayurvéda</a><br>
+            <a href="prestations.html">Mes Prestations</a><br>
+            <a href="avis.html">Témoignages</a><br>
+            <a href="contact.html">Contact</a>
+          </nav>
+        </div>
+        <div class="footer-section">
+          <h3>Informations légales</h3>
+          <p>
+            Vos données sont protégées (RGPD).<br>
+            <a href="contact.html">Droit de retrait des témoignages</a><br>
+            Site hébergé par GitHub Pages
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Adeline Ayurveda — Tous droits réservés</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts JS -->
+  <script src="js/menu-hamburger.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/form-handler.js" defer></script>
+
+  <!-- Compteur de caractères temps réel -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const messageField = document.getElementById('message');
+      const messageCount = document.getElementById('messageCount');
+
+      messageField.addEventListener('input', () => {
+        const length = messageField.value.length;
+        messageCount.textContent = `${length} / 500 caractères`;
+      });
+    });
+  </script>
+</body>
+</html>

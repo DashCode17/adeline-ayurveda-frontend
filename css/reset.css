@@ -1,0 +1,70 @@
+/* ========================================
+   RESET CSS MINIMAL
+   ======================================== */
+
+/* Box-sizing unifié */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Suppression des marges/paddings par défaut */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Corps de page */
+html {
+  /* Améliore le rendu des polices */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Images responsives */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Formulaires : héritage des polices */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Évite le débordement de texte */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* Listes sans style par défaut */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Liens sans style par défaut (sera personnalisé après) */
+a {
+  text-decoration: none;
+  color: inherit;
+}

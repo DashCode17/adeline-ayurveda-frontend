@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Adeline, praticienne en massage bien-être ayurvédique. Retrouvez légèreté, harmonie et vitalité grâce à des massages ayurvédiques personnalisés.">
+  <title>Accueil — Adeline Ayurveda</title>
+
+  <!-- Styles CSS -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/reviews-slider.css">
+
+  <!-- Favicon (optionnel) -->
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+</head>
+<body class="site-wrapper">
+
+  <!-- Overlay menu mobile -->
+  <div class="nav-overlay"></div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <!-- Logo -->
+        <a href="index.html" class="site-logo">
+          <img src="assets/logo.svg" alt="Logo Adeline Ayurveda">
+          <span class="site-title">Adeline Ayurveda</span>
+        </a>
+
+        <!-- Bouton hamburger (mobile/tablette) -->
+        <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+          <div class="nav-toggle-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+
+        <!-- Navigation principale -->
+        <nav class="main-nav" aria-label="Navigation principale">
+          <ul>
+            <li><a href="index.html" class="active">Accueil</a></li>
+            <li><a href="ayurveda.html">Qu'est-ce que l'Ayurvéda</a></li>
+            <li><a href="prestations.html">Mes Prestations</a></li>
+            <li><a href="avis.html">Témoignages</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- Section Héro -->
+    <section class="hero">
+      <div class="container">
+        <h1>Bienvenue</h1>
+
+        <!-- Image d'illustration -->
+        <div class="text-center mb-lg">
+          <img src="assets/images/meditation-sereine-ayurveda.webp" alt="Méditation sereine - ambiance ayurveda" class="img-rounded img-shadow" style="max-width: 600px; width: 100%;">
+        </div>
+
+        <div class="container-narrow">
+          <p>
+            Je suis <strong>Adeline</strong>, praticienne en massage bien-être ayurvédique.
+            Je vous accompagne sur un chemin de <strong>mieux-être global</strong>, à travers des conseils personnalisés
+            et des massages ayurvédiques adaptés à vos besoins.
+          </p>
+
+          <!-- Image huiles essentielles -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
+            <img src="assets/images/HE-fleurs-jasmin.webp" alt="Huiles essentielles et fleurs de jasmin" class="img-rounded img-shadow">
+            <img src="assets/images/soins-dos-massage-ayurveda.webp" alt="Soins du dos - massage ayurvédique" class="img-rounded img-shadow">
+          </div>
+
+          <p>
+            Les soins proposés sont réalisés à partir <strong>d'huiles chaudes et d'huiles essentielles de haute qualité</strong>.
+            Ils favorisent une <strong>détente profonde</strong>, apaisent le corps et l'esprit, et invitent à un véritable lâcher-prise.
+          </p>
+          <p>
+            Les massages ayurvédiques contribuent à retrouver <strong>légèreté, harmonie et vitalité</strong>, notamment grâce
+            à l'élimination des toxines et à la relance de l'énergie.
+            Chaque séance est un <strong>temps pour soi</strong>, une parenthèse de douceur et de recentrage.
+          </p>
+          <div class="text-center mt-lg">
+            <a href="prestations.html" class="btn btn-primary">Découvrir mes prestations</a>
+            <a href="laisser-un-avis.html" class="btn btn-outline" style="margin-left: 1rem;">Laisser un avis</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Témoignages -->
+    <section class="reviews-slider">
+      <div class="container">
+        <h2 class="reviews-slider-title">Ce que disent mes clients</h2>
+
+        <!-- Conteneur du slider (sera peuplé par JS) -->
+        <div class="slider-container" id="reviewsSlider">
+          <!-- Card fallback (si JS désactivé ou API indisponible) -->
+          <div class="review-card-fallback">
+            <strong>Témoignages en cours de chargement...</strong>
+            <p>Si rien n'apparaît, veuillez réactiver JavaScript ou consulter la page <a href="avis.html">Témoignages</a>.</p>
+          </div>
+        </div>
+
+        <!-- Indicateurs dots (optionnels, gérés par JS) -->
+        <div class="slider-dots" id="sliderDots"></div>
+
+        <!-- Mention RGPD -->
+        <p class="text-center text-muted mt-md" style="font-size: var(--font-size-xs);">
+          Témoignages publiés après modération. <a href="avis.html">Voir tous les avis</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <!-- Section 1 : À propos -->
+        <div class="footer-section">
+          <h3>Adeline Ayurveda</h3>
+          <p>
+            Praticienne en massage bien-être ayurvédique.<br>
+            Votre bien-être, ma priorité.
+          </p>
+        </div>
+
+        <!-- Section 2 : Navigation -->
+        <div class="footer-section">
+          <h3>Navigation</h3>
+          <nav aria-label="Navigation footer">
+            <a href="index.html">Accueil</a><br>
+            <a href="ayurveda.html">Qu'est-ce que l'Ayurvéda</a><br>
+            <a href="prestations.html">Mes Prestations</a><br>
+            <a href="avis.html">Témoignages</a><br>
+            <a href="contact.html">Contact</a>
+          </nav>
+        </div>
+
+        <!-- Section 3 : Mentions légales -->
+        <div class="footer-section">
+          <h3>Informations légales</h3>
+          <p>
+            Vos données sont protégées (RGPD).<br>
+            <a href="contact.html">Droit de retrait des témoignages</a><br>
+            Site hébergé par GitHub Pages
+          </p>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="footer-bottom">
+        <p>&copy; 2025 Adeline Ayurveda — Tous droits réservés</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts JS -->
+  <script src="js/menu-hamburger.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/reviews-slider.js" defer></script>
+</body>
+</html>

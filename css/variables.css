@@ -1,0 +1,99 @@
+/* ========================================
+   VARIABLES CSS — Charte graphique
+   ======================================== */
+
+:root {
+  /* === COULEURS === */
+  /* Charte imposée Adeline Ayurveda */
+  --color-bg-main: #F1EBD8;      /* Fond de page principal (beige clair) */
+  --color-secondary-1: #B7B996;  /* Gris-vert */
+  --color-secondary-2: #E2D1AA;  /* Beige moyen */
+  --color-accent-1: #E4BD6C;     /* Doré */
+  --color-accent-2: #E5C3AB;     /* Rose poudré */
+  --color-accent-3: #C99469;     /* Terracotta */
+
+  /* Couleurs fonctionnelles */
+  --color-text-dark: #3A3A3A;    /* Texte principal */
+  --color-text-light: #FFFFFF;   /* Texte sur fond foncé */
+  --color-border: #D4C5A9;       /* Bordures légères */
+  --color-shadow: rgba(0, 0, 0, 0.1); /* Ombres */
+
+  /* États (succès, erreur, info) */
+  --color-success: #4A7C59;
+  --color-error: #C45959;
+  --color-info: #5B8FA3;
+
+  /* === TYPOGRAPHIE === */
+  /* Polices */
+  --font-heading: 'Ananda Black', serif;     /* Titres */
+  --font-body: 'Marcellus', serif;           /* Paragraphes */
+  --font-fallback: Georgia, 'Times New Roman', serif;
+
+  /* Tailles de police (mobile-first) */
+  --font-size-xs: 0.875rem;   /* 14px */
+  --font-size-sm: 1rem;       /* 16px */
+  --font-size-base: 1.125rem; /* 18px */
+  --font-size-md: 1.25rem;    /* 20px */
+  --font-size-lg: 1.5rem;     /* 24px */
+  --font-size-xl: 2rem;       /* 32px */
+  --font-size-2xl: 2.5rem;    /* 40px */
+  --font-size-3xl: 3rem;      /* 48px */
+
+  /* Poids de police */
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+
+  /* === ESPACEMENTS === */
+  --spacing-xs: 0.5rem;   /* 8px */
+  --spacing-sm: 1rem;     /* 16px */
+  --spacing-md: 1.5rem;   /* 24px */
+  --spacing-lg: 2rem;     /* 32px */
+  --spacing-xl: 3rem;     /* 48px */
+  --spacing-2xl: 4rem;    /* 64px */
+  --spacing-3xl: 6rem;    /* 96px */
+
+  /* === DIMENSIONS === */
+  --max-width-content: 1200px;   /* Largeur max du contenu */
+  --max-width-text: 65ch;        /* Largeur max pour le texte (lisibilité) */
+  --header-height: 80px;
+  --footer-height: auto;
+
+  /* === BREAKPOINTS (pour référence, utilisés dans @media) === */
+  /* --breakpoint-sm: 640px;  */
+  /* --breakpoint-md: 768px;  */
+  /* --breakpoint-lg: 1024px; */
+  /* --breakpoint-xl: 1280px; */
+
+  /* === EFFETS === */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px var(--color-shadow);
+  --shadow-md: 0 4px 6px var(--color-shadow);
+  --shadow-lg: 0 10px 20px var(--color-shadow);
+
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+  --transition-slow: 400ms ease-in-out;
+}
+
+/* === DÉCLARATIONS @font-face === */
+
+@font-face {
+  font-family: 'Ananda Black';
+  src: url('../assets/fonts/AnandaBlack.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap; /* Améliore les performances de chargement */
+}
+
+@font-face {
+  font-family: 'Marcellus';
+  src: url('../assets/fonts/Marcellus-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
