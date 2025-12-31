@@ -32,9 +32,8 @@
       return 'http://localhost:3000';
     }
 
-    // En production (à remplacer par l'URL Render réelle)
-    // Ex: 'https://adeline-ayurveda-api.onrender.com'
-    return 'https://VOTRE-SERVICE.onrender.com';
+    // Production : Backend déployé sur Render
+    return 'https://adeline-ayurveda-backend.onrender.com';
   }
 
   /**
