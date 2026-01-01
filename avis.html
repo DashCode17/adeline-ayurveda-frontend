@@ -126,14 +126,15 @@
         <div class="footer-section">
           <h3>Informations légales</h3>
           <p>
-            Vos données sont protégées (RGPD).<br>
-            <a href="contact.html">Droit de retrait des témoignages</a><br>
+            Vos données sont protégées par le Règlement Général sur la Protection des Données (RGPD).<br>
+            Droit de retrait des témoignages :<br />
+              Si vous souhaitez retirer votre témoignage publié sur ce site, contactez-moi au 06 75 79 15 96 et votre avis sera supprimé dans les plus brefs délais.<br>
             Site hébergé par GitHub Pages
           </p>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 Adeline Ayurveda — Tous droits réservés</p>
+        <p>&copy; <span id="currentYear"></span> Adeline Ayurveda — Tous droits réservés</p>
       </div>
     </div>
   </footer>
@@ -205,5 +206,9 @@
       return div.innerHTML;
     }
   </script>
-</body>
+    <!-- Mise à jour automatique de l'année dans le footer -->
+    <script>
+      document.getElementById("currentYear").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>

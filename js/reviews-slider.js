@@ -77,7 +77,7 @@
       </div>
       <p class="review-message">${escapeHTML(review.message)}</p>
       <div class="review-author">
-        <span class="review-author-name" style="font-style: italic; color: var(--color-secondary-1);">${escapeHTML(review.name)} - ${escapeHTML(review.city)}</span>
+        <span class="review-author-name" style="font-style: italic; color: var(--color-secondary-1);">${escapeHTML(review.name)}</span>
       </div>
     `;
 

@@ -115,7 +115,6 @@
     // Liste des champs à valider
     const fields = [
       { id: 'firstname', errorId: 'firstnameError', message: 'Le prénom est requis' },
-      { id: 'city', errorId: 'cityError', message: 'La ville est requise' },
       { id: 'message', errorId: 'messageError', message: 'Le témoignage doit contenir au moins 10 caractères' },
       { id: 'email', errorId: 'emailError', message: 'Un email valide est requis' }
     ];
@@ -151,8 +150,7 @@
     // Validation des checkboxes (consentements)
     const requiredCheckboxes = [
       { id: 'consentEmail', message: 'Vous devez accepter l\'utilisation de votre email' },
-      { id: 'consentPublication', message: 'Vous devez autoriser la publication' },
-      { id: 'confirmedService', message: 'Vous devez confirmer avoir reçu une prestation' }
+      { id: 'consentPublication', message: 'Vous devez autoriser la publication' }
     ];
 
     requiredCheckboxes.forEach(checkbox => {
@@ -175,7 +173,6 @@
 
     return {
       name: formData.get('firstname').trim(), // Backend attend "name"
-      city: formData.get('city').trim(),
       message: formData.get('message').trim(),
       email: formData.get('email').trim(),
       rating: parseInt(formData.get('rating'), 10),
