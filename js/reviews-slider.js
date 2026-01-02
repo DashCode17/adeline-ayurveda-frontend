@@ -4,6 +4,8 @@
  * Utilise scroll-snap natif (pas de librairie)
  * Gère le fallback si l'API échoue
  * Crée les indicateurs dots
+ *
+ * @version 1.1.0 - Ajout dates relatives (2026-01-02)
  */
 
 (function() {
