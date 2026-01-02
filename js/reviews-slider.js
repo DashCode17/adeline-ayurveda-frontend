@@ -71,13 +71,17 @@
     // Génère les étoiles
     const stars = createStars(review.rating);
 
+    // Formater la date relative
+    const relativeDate = formatRelativeDate(review.approvedAt);
+    const dateText = relativeDate ? ` (${relativeDate})` : '';
+
     card.innerHTML = `
       <div class="review-rating">
         ${stars}
       </div>
       <p class="review-message">${escapeHTML(review.message)}</p>
       <div class="review-author">
-        <span class="review-author-name" style="font-style: italic; color: var(--color-secondary-1);">${escapeHTML(review.name)}</span>
+        <span class="review-author-name" style="font-style: italic; color: var(--color-secondary-1);">${escapeHTML(review.name)}${dateText}</span>
       </div>
     `;
 
@@ -201,6 +205,55 @@
         updateActiveDot(dotsContainer, closestIndex);
       }, 100); // Debounce
     });
+  }
+
+  /**
+   * Formate une date en référence temporelle relative
+   * @param {string} dateString - Date ISO (ex: "2026-01-02T17:10:40.372Z")
+   * @returns {string} Référence relative (ex: "Aujourd'hui", "Il y a 3 jours")
+   */
+  function formatRelativeDate(dateString) {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+    const now = new Date();
+
+    // Calculer la différence en millisecondes
+    const diffMs = now - date;
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    const diffWeeks = Math.floor(diffDays / 7);
+    const diffYears = Math.floor(diffDays / 365);
+
+    // Aujourd'hui (même jour calendaire)
+    if (diffDays === 0) {
+      return 'Aujourd\'hui';
+    }
+
+    // Hier (jour calendaire précédent)
+    if (diffDays === 1) {
+      return 'Hier';
+    }
+
+    // Il y a X jours (< 7 jours)
+    if (diffDays < 7) {
+      return `Il y a ${diffDays} jour${diffDays > 1 ? 's' : ''}`;
+    }
+
+    // Il y a X semaines (< 52 semaines)
+    if (diffWeeks < 52) {
+      return `Il y a ${diffWeeks} semaine${diffWeeks > 1 ? 's' : ''}`;
+    }
+
+    // Il y a 1 an
+    if (diffYears === 1) {
+      return 'Il y a 1 an';
+    }
+
+    // Il y a X ans
+    return `Il y a ${diffYears} ans`;
   }
 
   /**

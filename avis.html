@@ -176,6 +176,38 @@
       }
     });
 
+    // Fonction pour formater la date en référence temporelle relative
+    function formatRelativeDate(dateString) {
+      if (!dateString) return '';
+
+      const date = new Date(dateString);
+      const now = new Date();
+
+      // Calculer la différence en millisecondes
+      const diffMs = now - date;
+      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const diffWeeks = Math.floor(diffDays / 7);
+      const diffYears = Math.floor(diffDays / 365);
+
+      // Aujourd'hui
+      if (diffDays === 0) return 'Aujourd\'hui';
+
+      // Hier
+      if (diffDays === 1) return 'Hier';
+
+      // Il y a X jours (< 7 jours)
+      if (diffDays < 7) return `Il y a ${diffDays} jour${diffDays > 1 ? 's' : ''}`;
+
+      // Il y a X semaines (< 52 semaines)
+      if (diffWeeks < 52) return `Il y a ${diffWeeks} semaine${diffWeeks > 1 ? 's' : ''}`;
+
+      // Il y a 1 an
+      if (diffYears === 1) return 'Il y a 1 an';
+
+      // Il y a X ans
+      return `Il y a ${diffYears} ans`;
+    }
+
     // Fonction pour créer une card d'avis
     function createReviewCard(review) {
       const card = document.createElement('div');
@@ -183,6 +215,13 @@
 
       // Étoiles
       const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+
+      // Formater la date relative
+      const relativeDate = formatRelativeDate(review.approvedAt);
+      const dateText = relativeDate ? ` (${relativeDate})` : '';
+
+      // Affichage ville (optionnel, pour rétrocompatibilité)
+      const cityText = review.city ? ` - ${escapeHTML(review.city)}` : '';
 
       card.innerHTML = `
         <div class="card-header">
@@ -194,7 +233,7 @@
           <p style="font-style: italic; line-height: 1.7;">${escapeHTML(review.message)}</p>
         </div>
         <div class="card-footer">
-          <span style="font-style: italic; color: var(--color-secondary-1);">${escapeHTML(review.name)} - ${escapeHTML(review.city)}</span>
+          <span style="font-style: italic; color: var(--color-secondary-1);">${escapeHTML(review.name)}${dateText}${cityText}</span>
         </div>
       `;
 
