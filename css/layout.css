@@ -429,4 +429,40 @@ p {
   .main-nav {
     width: 90%;
   }
+
+  /* === AJUSTEMENTS PAGE D'ACCUEIL MOBILE === */
+
+  /* Boutons CTA : même largeur et espacement */
+  .text-center .btn {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0 !important; /* Override du margin-left inline */
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .text-center .btn:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Réduire l'espace entre les boutons et le titre "Témoignages" */
+  .text-center.mt-lg {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  /* Réduire l'espace au-dessus de la section Témoignages */
+  .reviews-slider {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+
+  /* Réduire l'espace entre le slider et le texte de modération */
+  .reviews-slider .mt-md {
+    margin-top: var(--spacing-sm);
+  }
+
+  /* Réduire l'espace avant le footer */
+  .site-footer {
+    margin-top: var(--spacing-xl);
+  }
 }
