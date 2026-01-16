@@ -387,16 +387,20 @@
 
           <p>${review.message}</p>
 
-          ${review.status === 'pending' ? `
-            <div class="review-actions">
+          <div class="review-actions">
+            ${review.status === 'pending' ? `
               <button class="btn btn-approve" onclick="approveReview('${review.id}')">
                 ✓ Approuver
               </button>
               <button class="btn btn-reject" onclick="rejectReview('${review.id}')">
                 ✗ Rejeter
               </button>
-            </div>
-          ` : ''}
+            ` : `
+              <button class="btn btn-delete" onclick="deleteReview('${review.id}')">
+                🗑️ Supprimer
+              </button>
+            `}
+          </div>
         </div>
       `).join('');
     }
@@ -462,6 +466,38 @@
 
       } catch (error) {
         console.error('[Admin] Erreur rejectReview:', error);
+        showMessage('Erreur : ' + error.message, 'error');
+      }
+    }
+
+    // Supprimer un avis approuvé
+    async function deleteReview(reviewId) {
+      if (!confirm('Supprimer définitivement cet avis approuvé ?\n\nCette action est irréversible et retirera l\'avis du site public.')) return;
+
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/delete`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+          },
+          body: JSON.stringify({ reviewId })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || 'Erreur lors de la suppression');
+        }
+
+        showMessage('Avis supprimé avec succès !', 'success');
+
+        // Recharger les avis après un court délai
+        setTimeout(() => {
+          loadReviews();
+        }, 800);
+
+      } catch (error) {
+        console.error('[Admin] Erreur deleteReview:', error);
         showMessage('Erreur : ' + error.message, 'error');
       }
     }
