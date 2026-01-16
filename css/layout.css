@@ -1,5 +1,6 @@
 /* ========================================
    LAYOUT — Structure globale du site
+   Version: 1.1.0 - Ajustements responsive mobile
    ======================================== */
 
 /* === CORPS DE PAGE === */
@@ -432,37 +433,47 @@ p {
 
   /* === AJUSTEMENTS PAGE D'ACCUEIL MOBILE === */
 
-  /* Boutons CTA : même largeur et espacement */
-  .text-center .btn {
-    display: block;
-    width: 100%;
-    max-width: 100%;
+  /* Boutons CTA : même largeur et espacement vertical */
+  section .text-center.mt-lg .btn {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
     margin-left: 0 !important; /* Override du margin-left inline */
-    margin-bottom: var(--spacing-sm);
+    margin-right: 0 !important;
+    margin-bottom: var(--spacing-md) !important;
   }
 
-  .text-center .btn:last-child {
-    margin-bottom: 0;
+  section .text-center.mt-lg .btn:last-child {
+    margin-bottom: 0 !important;
   }
 
-  /* Réduire l'espace entre les boutons et le titre "Témoignages" */
-  .text-center.mt-lg {
-    margin-bottom: var(--spacing-lg);
+  /* Réduire l'espace entre le container de boutons et la section suivante */
+  section .text-center.mt-lg {
+    margin-top: var(--spacing-lg) !important;
+    margin-bottom: var(--spacing-sm) !important;
   }
 
-  /* Réduire l'espace au-dessus de la section Témoignages */
-  .reviews-slider {
-    margin-top: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
+  /* Réduire l'espace au-dessus et en-dessous de la section Témoignages */
+  section.reviews-slider {
+    padding-top: var(--spacing-sm) !important;
+    padding-bottom: var(--spacing-md) !important;
+    margin-top: 0 !important;
+  }
+
+  /* Réduire marge du titre Témoignages */
+  .reviews-slider-title {
+    margin-bottom: var(--spacing-md) !important;
   }
 
   /* Réduire l'espace entre le slider et le texte de modération */
-  .reviews-slider .mt-md {
-    margin-top: var(--spacing-sm);
+  .reviews-slider p.mt-md {
+    margin-top: var(--spacing-xs) !important;
+    margin-bottom: var(--spacing-sm) !important;
   }
 
   /* Réduire l'espace avant le footer */
   .site-footer {
-    margin-top: var(--spacing-xl);
+    margin-top: var(--spacing-lg) !important;
+    padding-top: var(--spacing-lg) !important;
   }
 }
