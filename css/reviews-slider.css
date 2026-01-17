@@ -5,7 +5,7 @@
 /* === CONTENEUR PRINCIPAL === */
 .reviews-slider {
   position: relative;
-  margin: var(--spacing-xl) 0;
+  margin: var(--spacing-xl) 0 var(--spacing-md) 0; /* Réduit marge basse */
 }
 
 .reviews-slider-title {
@@ -38,6 +38,9 @@
   /* IMPORTANT : Évite le débordement horizontal de la page */
   max-width: 100%;
   width: 100%;
+
+  /* Centre le contenu quand il n'y a qu'un seul élément (fallback) */
+  justify-content: center;
 }
 
 /* Masque scrollbar Webkit (Chrome, Safari) */
@@ -147,6 +150,7 @@
   flex-shrink: 0;
   min-width: 280px;
   width: 90vw;
+  max-width: 500px; /* Limite la largeur pour éviter débordement desktop */
 
   background-color: var(--color-secondary-2);
   border: 2px dashed var(--color-border);
@@ -243,6 +247,11 @@
   .review-card {
     width: calc(33.333% - var(--spacing-md)); /* 3 cards visibles */
     min-width: 300px;
+  }
+
+  /* Masque scrollbar desktop quand un seul élément (pas de débordement) */
+  .slider-container:has(.review-card-fallback:only-child) {
+    overflow-x: hidden;
   }
 }
 
