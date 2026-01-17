@@ -392,6 +392,21 @@ p {
   }
 }
 
+/* === AJUSTEMENTS DESKTOP (espacement section témoignages) === */
+@media (min-width: 641px) {
+  /* Réduit le padding vertical excessif de la section témoignages sur desktop */
+  section.reviews-slider {
+    padding-top: var(--spacing-lg) !important;
+    padding-bottom: var(--spacing-sm) !important;
+  }
+
+  /* Réduit l'espacement du paragraphe de modération */
+  .reviews-slider p.text-muted {
+    margin-top: var(--spacing-xs) !important;
+    margin-bottom: var(--spacing-sm) !important;
+  }
+}
+
 /* Mobile */
 @media (max-width: 640px) {
   :root {
