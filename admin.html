@@ -173,6 +173,85 @@
       padding: 2rem;
       color: var(--color-text-muted);
     }
+
+    /* Statistiques Cloudflare */
+    .cloudflare-stats {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-left: 4px solid #4f46e5;
+    }
+
+    .cloudflare-stats h2 {
+      font-size: 1.25rem;
+      margin: 0 0 1rem 0;
+      color: var(--color-accent-3);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cloudflare-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cloudflare-stat-item {
+      text-align: center;
+      padding: 1rem;
+      background: #f9fafb;
+      border-radius: 6px;
+    }
+
+    .cloudflare-stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #4f46e5;
+      margin: 0;
+    }
+
+    .cloudflare-stat-label {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin: 0.25rem 0 0;
+    }
+
+    .cloudflare-top-pages {
+      margin-top: 1.5rem;
+    }
+
+    .cloudflare-top-pages h3 {
+      font-size: 1rem;
+      margin: 0 0 0.75rem 0;
+      color: var(--color-text-dark);
+    }
+
+    .cloudflare-top-pages ol {
+      margin: 0;
+      padding-left: 1.5rem;
+      list-style: decimal;
+    }
+
+    .cloudflare-top-pages li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .cloudflare-top-pages li:last-child {
+      border-bottom: none;
+    }
+
+    .cloudflare-stats-unavailable {
+      background: #fef3c7;
+      border-left-color: #f59e0b;
+      padding: 1rem;
+      text-align: center;
+      color: #92400e;
+    }
   </style>
 </head>
 <body>
@@ -213,7 +292,36 @@
 
     <div id="adminMessage" class="message hidden"></div>
 
-    <!-- Statistiques -->
+    <!-- Statistiques Cloudflare (30 derniers jours) -->
+    <div id="cloudflareStats" class="cloudflare-stats hidden">
+      <h2>📊 Statistiques (30 derniers jours)</h2>
+      <div class="cloudflare-stats-grid">
+        <div class="cloudflare-stat-item">
+          <div class="cloudflare-stat-value" id="cfStatVisitors">-</div>
+          <div class="cloudflare-stat-label">Visiteurs uniques</div>
+        </div>
+        <div class="cloudflare-stat-item">
+          <div class="cloudflare-stat-value" id="cfStatPageViews">-</div>
+          <div class="cloudflare-stat-label">Pages vues</div>
+        </div>
+        <div class="cloudflare-stat-item">
+          <div class="cloudflare-stat-value" id="cfStatMobile">-</div>
+          <div class="cloudflare-stat-label">📱 Mobile</div>
+        </div>
+        <div class="cloudflare-stat-item">
+          <div class="cloudflare-stat-value" id="cfStatDesktop">-</div>
+          <div class="cloudflare-stat-label">🖥️ Desktop</div>
+        </div>
+      </div>
+      <div class="cloudflare-top-pages">
+        <h3>🔝 Pages les plus consultées</h3>
+        <ol id="cfTopPages">
+          <li>Chargement...</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Statistiques Avis -->
     <div class="stats">
       <div class="stat-card">
         <h3 id="statTotal">0</h3>
@@ -294,6 +402,7 @@
         loginSection.classList.add('hidden');
         adminSection.classList.remove('hidden');
         loadReviews();
+        loadCloudflareStats();
       } catch (error) {
         loginError.textContent = 'Token admin invalide. Vérifiez backend/.env';
         loginError.classList.remove('hidden');
@@ -348,6 +457,71 @@
         reviewsList.innerHTML = `<div class="message message-error">Erreur: ${error.message}</div>`;
         // NE PAS déconnecter automatiquement, laisser l'admin gérer
       }
+    }
+
+    // Charger les statistiques Cloudflare
+    async function loadCloudflareStats() {
+      const statsContainer = document.getElementById('cloudflareStats');
+
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/stats`, {
+          headers: {
+            'Authorization': `Bearer ${adminToken}`
+          }
+        });
+
+        if (!response.ok) {
+          console.warn('[Admin] Erreur chargement stats Cloudflare:', response.status);
+          showStatsUnavailable();
+          return;
+        }
+
+        const data = await response.json();
+
+        // Si API Cloudflare indisponible ou config manquante
+        if (!data.ok) {
+          console.warn('[Admin] Stats Cloudflare indisponibles:', data.message);
+          showStatsUnavailable();
+          return;
+        }
+
+        // Afficher les statistiques
+        document.getElementById('cfStatVisitors').textContent = formatNumber(data.stats.visitors);
+        document.getElementById('cfStatPageViews').textContent = formatNumber(data.stats.pageViews);
+        document.getElementById('cfStatMobile').textContent = data.stats.devices.mobile + '%';
+        document.getElementById('cfStatDesktop').textContent = data.stats.devices.desktop + '%';
+
+        // Afficher le top des pages
+        const topPagesContainer = document.getElementById('cfTopPages');
+        if (data.stats.topPages && data.stats.topPages.length > 0) {
+          topPagesContainer.innerHTML = data.stats.topPages
+            .map(page => `<li>${page.path} <strong>(${formatNumber(page.views)} vues)</strong></li>`)
+            .join('');
+        } else {
+          topPagesContainer.innerHTML = '<li>Aucune donnée disponible</li>';
+        }
+
+        // Afficher le conteneur de stats
+        statsContainer.classList.remove('hidden');
+        statsContainer.classList.remove('cloudflare-stats-unavailable');
+
+      } catch (error) {
+        console.error('[Admin] Erreur loadCloudflareStats:', error);
+        showStatsUnavailable();
+      }
+    }
+
+    // Afficher le message "Statistiques indisponibles"
+    function showStatsUnavailable() {
+      const statsContainer = document.getElementById('cloudflareStats');
+      statsContainer.innerHTML = '<p class="cloudflare-stats-unavailable">📊 Statistiques indisponibles pour le moment</p>';
+      statsContainer.classList.add('cloudflare-stats-unavailable');
+      statsContainer.classList.remove('hidden');
+    }
+
+    // Formater les nombres avec séparateurs de milliers
+    function formatNumber(num) {
+      return new Intl.NumberFormat('fr-FR').format(num);
     }
 
     // Afficher les avis selon le filtre
@@ -517,6 +691,7 @@
           loginSection.classList.add('hidden');
           adminSection.classList.remove('hidden');
           loadReviews();
+          loadCloudflareStats();
         } else {
           // Token invalide, supprimer du localStorage
           localStorage.removeItem('adminToken');
