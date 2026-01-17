@@ -145,7 +145,8 @@
   <script src="js/menu-hamburger.js" defer></script>
   <script src="js/api.js" defer></script>
   <script>
-    // Script inline pour charger la liste des avis (simple, pas de fichier séparé)
+    // Script inline pour charger la liste des avis
+    // @version 1.2.0 - Fix affichage entités HTML (2026-01-17)
     document.addEventListener('DOMContentLoaded', async () => {
       const reviewsList = document.getElementById('reviewsList');
       const noReviewsMessage = document.getElementById('noReviewsMessage');
@@ -221,7 +222,7 @@
       const dateText = relativeDate ? ` (${relativeDate})` : '';
 
       // Affichage ville (optionnel, pour rétrocompatibilité)
-      const cityText = review.city ? ` - ${escapeHTML(review.city)}` : '';
+      const cityText = review.city ? ` - ${decodeHTMLEntities(review.city)}` : '';
 
       card.innerHTML = `
         <div class="card-header">
@@ -230,21 +231,23 @@
           </div>
         </div>
         <div class="card-body">
-          <p style="font-style: italic; line-height: 1.7;">${escapeHTML(review.message)}</p>
+          <p style="font-style: italic; line-height: 1.7;">${decodeHTMLEntities(review.message)}</p>
         </div>
         <div class="card-footer">
-          <span style="font-style: italic; color: var(--color-secondary-1);">${escapeHTML(review.name)}${dateText}${cityText}</span>
+          <span style="font-style: italic; color: var(--color-secondary-1);">${decodeHTMLEntities(review.name)}${dateText}${cityText}</span>
         </div>
       `;
 
       return card;
     }
 
-    // Fonction d'échappement HTML (sécurité XSS)
-    function escapeHTML(str) {
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
+    // Décode les entités HTML (pour afficher correctement le texte du backend)
+    // Le backend encode déjà les caractères spéciaux, on doit les décoder pour l'affichage
+    function decodeHTMLEntities(str) {
+      if (typeof str !== 'string') return str;
+      const textarea = document.createElement('textarea');
+      textarea.innerHTML = str;
+      return textarea.value;
     }
   </script>
     <!-- Mise à jour automatique de l'année dans le footer -->

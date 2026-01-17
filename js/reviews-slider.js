@@ -5,7 +5,7 @@
  * Gère le fallback si l'API échoue
  * Crée les indicateurs dots
  *
- * @version 1.1.0 - Ajout dates relatives (2026-01-02)
+ * @version 1.2.0 - Fix affichage entités HTML (2026-01-17)
  */
 
 (function() {
@@ -81,9 +81,9 @@
       <div class="review-rating">
         ${stars}
       </div>
-      <p class="review-message">${escapeHTML(review.message)}</p>
+      <p class="review-message">${decodeHTMLEntities(review.message)}</p>
       <div class="review-author">
-        <span class="review-author-name" style="font-style: italic; color: var(--color-secondary-1);">${escapeHTML(review.name)}${dateText}</span>
+        <span class="review-author-name" style="font-style: italic; color: var(--color-secondary-1);">${decodeHTMLEntities(review.name)}${dateText}</span>
       </div>
     `;
 
@@ -259,12 +259,14 @@
   }
 
   /**
-   * Fonction d'échappement HTML (sécurité XSS)
+   * Décode les entités HTML (pour afficher correctement le texte du backend)
+   * Le backend encode déjà les caractères spéciaux, on doit les décoder pour l'affichage
    */
-  function escapeHTML(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+  function decodeHTMLEntities(str) {
+    if (typeof str !== 'string') return str;
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = str;
+    return textarea.value;
   }
 
   console.log('[Slider] Module chargé');
