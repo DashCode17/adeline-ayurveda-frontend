@@ -1,11 +1,18 @@
 /* ========================================
    SLIDER TÉMOIGNAGES — Scroll-snap natif
+   @version 2.0.0 - Fix desktop UX (2026-01-17)
    ======================================== */
 
 /* === CONTENEUR PRINCIPAL === */
 .reviews-slider {
   position: relative;
-  margin: var(--spacing-xl) 0 var(--spacing-md) 0; /* Réduit marge basse */
+  margin: var(--spacing-xl) 0 0 0; /* Supprime marge basse pour réduire espacement */
+}
+
+/* Réduit l'espacement du texte de mention après le slider */
+.reviews-slider .text-muted {
+  margin-top: var(--spacing-sm) !important;
+  margin-bottom: var(--spacing-md) !important;
 }
 
 .reviews-slider-title {
@@ -23,9 +30,9 @@
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 
-  /* Masque la scrollbar (optionnel, garde fonctionnalité) */
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-accent-1) var(--color-secondary-2);
+  /* Masque complètement la scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 
   display: flex;
   gap: var(--spacing-md);
@@ -45,21 +52,20 @@
 
 /* Masque scrollbar Webkit (Chrome, Safari) */
 .slider-container::-webkit-scrollbar {
-  height: 8px;
+  height: 0px; /* Masque complètement la scrollbar */
+  width: 0px;
 }
 
 .slider-container::-webkit-scrollbar-track {
-  background: var(--color-secondary-2);
-  border-radius: var(--border-radius-full);
+  background: transparent;
 }
 
 .slider-container::-webkit-scrollbar-thumb {
-  background: var(--color-accent-1);
-  border-radius: var(--border-radius-full);
+  background: transparent;
 }
 
 .slider-container::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent-3);
+  background: transparent;
 }
 
 /* === CARD TÉMOIGNAGE === */
@@ -148,9 +154,11 @@
 .review-card-fallback {
   scroll-snap-align: start;
   flex-shrink: 0;
+
+  /* Largeur adaptative sans débordement */
+  width: 100%;
+  max-width: 500px;
   min-width: 280px;
-  width: 90vw;
-  max-width: 500px; /* Limite la largeur pour éviter débordement desktop */
 
   background-color: var(--color-secondary-2);
   border: 2px dashed var(--color-border);
@@ -247,11 +255,6 @@
   .review-card {
     width: calc(33.333% - var(--spacing-md)); /* 3 cards visibles */
     min-width: 300px;
-  }
-
-  /* Masque scrollbar desktop quand un seul élément (pas de débordement) */
-  .slider-container:has(.review-card-fallback:only-child) {
-    overflow-x: hidden;
   }
 }
 
