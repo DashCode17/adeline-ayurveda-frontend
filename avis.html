@@ -172,6 +172,9 @@
             const card = createReviewCard(review);
             reviewsList.appendChild(card);
           });
+
+          // Scroll automatique vers l'avis ciblé si anchor dans l'URL
+          scrollToTargetReview();
         }
       } catch (error) {
         // Erreur API
@@ -217,6 +220,7 @@
     function createReviewCard(review) {
       const card = document.createElement('div');
       card.className = 'card';
+      card.id = `review-${review.id}`; // ID unique pour ancre de lien
 
       // Étoiles
       const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
@@ -243,6 +247,25 @@
       `;
 
       return card;
+    }
+
+    // Scroll automatique vers l'avis ciblé si anchor dans l'URL
+    function scrollToTargetReview() {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#review-')) {
+        setTimeout(() => {
+          const targetElement = document.querySelector(hash);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Ajouter une animation pour mettre en évidence l'avis ciblé
+            targetElement.style.transition = 'box-shadow 0.3s ease';
+            targetElement.style.boxShadow = '0 0 0 3px var(--color-accent-3)';
+            setTimeout(() => {
+              targetElement.style.boxShadow = '';
+            }, 2000);
+          }
+        }, 300); // Attendre que les avis soient rendus
+      }
     }
 
     // Décode les entités HTML (pour afficher correctement le texte du backend)

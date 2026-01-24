@@ -81,13 +81,43 @@
       <div class="review-rating">
         ${stars}
       </div>
-      <p class="review-message">${decodeHTMLEntities(review.message)}</p>
+      <p class="review-message" data-review-id="${review.id}">${decodeHTMLEntities(review.message)}</p>
       <div class="review-author">
         <span class="review-author-name" style="font-style: italic; color: var(--color-secondary-1);">${decodeHTMLEntities(review.name)}${dateText}</span>
       </div>
     `;
 
+    // Vérifier si le texte est tronqué après le rendu
+    setTimeout(() => {
+      const messageElement = card.querySelector('.review-message');
+      if (messageElement && isTruncated(messageElement)) {
+        addReadMoreLink(card, review.id);
+      }
+    }, 0);
+
     return card;
+  }
+
+  /**
+   * Vérifie si un élément est tronqué (texte coupé par CSS)
+   */
+  function isTruncated(element) {
+    return element.scrollHeight > element.clientHeight;
+  }
+
+  /**
+   * Ajoute un lien "Témoignage complet" vers la page avis.html
+   */
+  function addReadMoreLink(card, reviewId) {
+    const messageElement = card.querySelector('.review-message');
+    const readMoreLink = document.createElement('a');
+    readMoreLink.href = `avis.html#review-${reviewId}`;
+    readMoreLink.className = 'review-read-more';
+    readMoreLink.textContent = 'Témoignage complet';
+    readMoreLink.style.cssText = 'display: inline-block; margin-top: 0.5rem; font-size: 0.875rem; color: var(--color-accent-3); text-decoration: underline; font-style: normal;';
+
+    // Insérer le lien après le message
+    messageElement.parentNode.insertBefore(readMoreLink, messageElement.nextSibling);
   }
 
   /**
